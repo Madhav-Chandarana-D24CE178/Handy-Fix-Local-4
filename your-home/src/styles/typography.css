@@ -1,0 +1,459 @@
+/* 
+ * HandyFix Typography & Spacing System
+ * Phase 3 Enhancement: Standardized typography scale and spacing grid across all pages
+ */
+
+/* ========== TYPOGRAPHY HIERARCHY ========== */
+
+/* Display - Hero titles, main CTAs */
+.display-text {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: -0.5px;
+  color: var(--color-text-primary);
+}
+
+/* Title 1 - Page titles, card titles */
+.title-1 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-title1);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: -0.3px;
+  color: var(--color-text-primary);
+}
+
+/* Title 2 - Section titles */
+.title-2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-title2);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: -0.2px;
+  color: var(--color-text-primary);
+}
+
+/* Title 3 - Card titles, subsections */
+.title-3 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-title3);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+}
+
+/* Body - Main content text */
+.body-text {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+}
+
+/* Body Semibold - Emphasized content */
+.body-semibold {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+}
+
+/* Label - Form labels, badges */
+.label-text {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-label);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+  letter-spacing: 0.5px;
+  color: var(--color-text-secondary);
+}
+
+/* Caption - Small descriptive text */
+.caption-text {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-secondary);
+}
+
+/* ========== COMMON COMPONENT TEXT SIZES ========== */
+
+/* Hero Section Text - Page greetings */
+.heading-greeting {
+  font-family: var(--font-family-heading);
+  font-size: 20px;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.subheading-greeting {
+  font-family: var(--font-family-body);
+  font-size: 13px;
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-secondary);
+}
+
+/* Section Headers with labels */
+.section-label {
+  font-family: var(--font-family-body);
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+  display: block;
+}
+
+.section-title {
+  font-family: var(--font-family-heading);
+  font-size: 22px;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-lg);
+}
+
+/* Card Title */
+.card-title {
+  font-family: var(--font-family-heading);
+  font-size: 14px;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.card-subtitle {
+  font-family: var(--font-family-body);
+  font-size: 11px;
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-secondary);
+}
+
+/* Button Text */
+.button-text {
+  font-family: var(--font-family-body);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
+  text-align: center;
+  color: inherit;
+}
+
+/* Input/Form Text */
+.input-text {
+  font-family: var(--font-family-body);
+  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+}
+
+.input-placeholder {
+  font-family: var(--font-family-body);
+  font-size: 14px;
+  line-height: var(--line-height-normal);
+  color: var(--color-text-muted);
+}
+
+/* ========== SPACING UTILITIES ========== */
+
+/* Padding utilities */
+.p-xs { padding: var(--space-xs); }
+.p-sm { padding: var(--space-sm); }
+.p-md { padding: var(--space-md); }
+.p-lg { padding: var(--space-lg); }
+.p-xl { padding: var(--space-xl); }
+.p-2xl { padding: var(--space-2xl); }
+.p-3xl { padding: var(--space-3xl); }
+.p-4xl { padding: var(--space-4xl); }
+
+.px-xs { padding-left: var(--space-xs); padding-right: var(--space-xs); }
+.px-sm { padding-left: var(--space-sm); padding-right: var(--space-sm); }
+.px-md { padding-left: var(--space-md); padding-right: var(--space-md); }
+.px-lg { padding-left: var(--space-lg); padding-right: var(--space-lg); }
+.px-xl { padding-left: var(--space-xl); padding-right: var(--space-xl); }
+.px-2xl { padding-left: var(--space-2xl); padding-right: var(--space-2xl); }
+
+.py-xs { padding-top: var(--space-xs); padding-bottom: var(--space-xs); }
+.py-sm { padding-top: var(--space-sm); padding-bottom: var(--space-sm); }
+.py-md { padding-top: var(--space-md); padding-bottom: var(--space-md); }
+.py-lg { padding-top: var(--space-lg); padding-bottom: var(--space-lg); }
+.py-xl { padding-top: var(--space-xl); padding-bottom: var(--space-xl); }
+.py-2xl { padding-top: var(--space-2xl); padding-bottom: var(--space-2xl); }
+
+/* Margin utilities */
+.m-xs { margin: var(--space-xs); }
+.m-sm { margin: var(--space-sm); }
+.m-md { margin: var(--space-md); }
+.m-lg { margin: var(--space-lg); }
+.m-xl { margin: var(--space-xl); }
+.m-2xl { margin: var(--space-2xl); }
+.m-3xl { margin: var(--space-3xl); }
+
+.mx-auto { margin-left: auto; margin-right: auto; }
+.my-auto { margin-top: auto; margin-bottom: auto; }
+
+.mb-xs { margin-bottom: var(--space-xs); }
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xl { margin-bottom: var(--space-xl); }
+.mb-2xl { margin-bottom: var(--space-2xl); }
+.mb-3xl { margin-bottom: var(--space-3xl); }
+
+.mt-xs { margin-top: var(--space-xs); }
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+.mt-2xl { margin-top: var(--space-2xl); }
+
+.gap-xs { gap: var(--space-xs); }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+.gap-lg { gap: var(--space-lg); }
+.gap-xl { gap: var(--space-xl); }
+.gap-2xl { gap: var(--space-2xl); }
+
+/* ========== RESPONSIVE TYPOGRAPHY ========== */
+
+/* Mobile adjustments */
+@media (max-width: 639px) {
+  .display-text {
+    font-size: 36px;
+  }
+
+  .title-1 {
+    font-size: 24px;
+  }
+
+  .title-2 {
+    font-size: 20px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    margin-bottom: var(--space-md);
+  }
+
+  .body-text {
+    font-size: 14px;
+  }
+
+  /* Reduce padding on mobile */
+  .p-2xl { padding: var(--space-xl); }
+  .p-3xl { padding: var(--space-2xl); }
+  .px-2xl { padding-left: var(--space-lg); padding-right: var(--space-lg); }
+
+  /* Compact spacing on mobile */
+  .mb-2xl { margin-bottom: var(--space-lg); }
+  .mb-3xl { margin-bottom: var(--space-xl); }
+}
+
+/* Tablet adjustments */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .display-text {
+    font-size: 42px;
+  }
+
+  .title-1 {
+    font-size: 28px;
+  }
+
+  .title-2 {
+    font-size: 22px;
+  }
+}
+
+/* Desktop - keep standard sizes */
+@media (min-width: 1025px) {
+  /* Keep default sizes */
+}
+
+/* ========== LAYOUT PATTERNS ========== */
+
+/* Card layout with standard spacing */
+.card-container {
+  background: var(--card-bg);
+  border: var(--card-border);
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
+  box-shadow: var(--card-shadow);
+  transition: var(--transition-default);
+}
+
+.card-container:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(calc(-1 * var(--card-hover-lift)));
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25);
+}
+
+/* Grid layouts with standard gaps */
+.grid-2col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+}
+
+.grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+.grid-4col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+}
+
+/* Responsive grid adjustments */
+@media (max-width: 1024px) {
+  .grid-3col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-4col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 639px) {
+  .grid-2col,
+  .grid-3col,
+  .grid-4col {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+}
+
+/* Flex layouts with standard gaps */
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ========== CONTENT WIDTH CONSTRAINTS ========== */
+
+/* Max widths for readability */
+.container-sm {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container-md {
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container-lg {
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.container-xl {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ========== TEXT UTILITIES ========== */
+
+/* Text alignment */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+/* Text transformation */
+.text-uppercase { text-transform: uppercase; }
+.text-lowercase { text-transform: lowercase; }
+.text-capitalize { text-transform: capitalize; }
+
+/* Text truncation */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.text-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ========== HEADING GROUP PATTERN ========== */
+
+/* Common section header (label + title) */
+.section-header {
+  margin-bottom: var(--space-lg);
+}
+
+.section-header .section-label {
+  margin-bottom: var(--space-sm);
+}
+
+.section-header .section-title {
+  margin-bottom: 0;
+}
+
+/* ========== RESPONSIVE SPACING HELPERS ========== */
+
+@media (max-width: 639px) {
+  /* Stack sections more tightly on mobile */
+  .section-header {
+    margin-bottom: var(--space-md);
+  }
+
+  .mb-2xl { margin-bottom: var(--space-lg); }
+}
+
+/* ========== PRINT STYLES ========== */
+
+@media print {
+  .display-text,
+  .title-1,
+  .title-2 {
+    page-break-after: avoid;
+  }
+
+  .card-container {
+    page-break-inside: avoid;
+  }
+}

@@ -1,0 +1,451 @@
+/* 
+ * HandyFix Responsive Layouts & Mobile Optimization
+ * Phase 3 Enhancement: Mobile-first responsive design with standardized spacing
+ */
+
+/* ========== CONTAINER QUERIES & MOBILE-FIRST LAYOUT ========== */
+
+:root {
+  /* Mobile-first spacing adjustments */
+  --page-padding: var(--space-lg);
+  --page-gap: var(--space-md);
+  --card-gap: var(--space-md);
+  --section-gap: var(--space-2xl);
+}
+
+/* Tablet breakpoint adjustments */
+@media (min-width: 640px) {
+  :root {
+    --page-padding: var(--space-xl);
+    --page-gap: var(--space-lg);
+    --card-gap: var(--space-lg);
+    --section-gap: var(--space-3xl);
+  }
+}
+
+/* Desktop breakpoint adjustments */
+@media (min-width: 1025px) {
+  :root {
+    --page-padding: var(--space-2xl);
+    --page-gap: var(--space-lg);
+    --card-gap: var(--space-lg);
+    --section-gap: var(--space-4xl);
+  }
+}
+
+/* ========== PAGE LAYOUTS ========== */
+
+/* Standard page wrapper */
+.page-wrapper {
+  min-height: 100vh;
+  background: var(--color-bg-base);
+  font-family: var(--font-family-body);
+  padding-top: var(--navbar-height);
+  padding-left: var(--page-padding);
+  padding-right: var(--page-padding);
+  padding-bottom: var(--space-2xl);
+}
+
+.page-container {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+/* Content padding */
+.content-area {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+}
+
+/* ========== CARD GRIDS ========== */
+
+/* 2-column grid - responsive */
+.grid-cards-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--card-gap);
+}
+
+@media (min-width: 640px) {
+  .grid-cards-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 3-column grid - responsive */
+.grid-cards-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--card-gap);
+}
+
+@media (min-width: 768px) {
+  .grid-cards-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-cards-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 4-column grid - responsive */
+.grid-cards-4 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--card-gap);
+}
+
+@media (min-width: 768px) {
+  .grid-cards-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-cards-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* List layout - full width cards */
+.list-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+}
+
+/* ========== SECTION SPACING ========== */
+
+/* Sections with proper spacing */
+.section {
+  margin-bottom: var(--section-gap);
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+/* Section group with label */
+.section-group {
+  margin-bottom: var(--section-gap);
+}
+
+.section-group .section-label {
+  display: block;
+  margin-bottom: var(--space-md);
+}
+
+.section-group .section-title {
+  display: block;
+  margin-bottom: var(--space-lg);
+}
+
+/* ========== HORIZONTAL SCROLLING CONTAINERS ========== */
+
+.horizontal-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: var(--card-gap);
+  padding-bottom: var(--space-xs);
+  margin-bottom: var(--space-lg);
+  /* Hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.horizontal-scroll-item {
+  flex-shrink: 0;
+  min-width: 280px;
+}
+
+@media (min-width: 640px) {
+  .horizontal-scroll-item {
+    min-width: 320px;
+  }
+}
+
+/* ========== MODAL & OVERLAY SIZES ========== */
+
+.modal-small {
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.modal-medium {
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.modal-large {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ========== MOBILE-SPECIFIC ADJUSTMENTS ========== */
+
+@media (max-width: 639px) {
+  /* Reduce padding on very small screens */
+  .page-wrapper {
+    --page-padding: var(--space-md);
+    padding-bottom: var(--space-3xl);
+  }
+
+  /* Stack grids into single column */
+  .grid-cards-2,
+  .grid-cards-3,
+  .grid-cards-4 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Reduce gaps */
+  :root {
+    --card-gap: var(--space-sm);
+    --section-gap: var(--space-2xl);
+  }
+
+  /* Horizontal scrolling items smaller on mobile */
+  .horizontal-scroll-item {
+    min-width: 260px;
+  }
+
+  /* Compact section spacing */
+  .section {
+    margin-bottom: var(--space-xl);
+  }
+
+  /* Keep card containers responsive */
+  .card-container {
+    padding: var(--space-lg);
+  }
+
+  /* Smaller buttons on mobile */
+  .button-text {
+    font-size: 13px;
+  }
+
+  /* More aggressive heading reduction */
+  .display-text {
+    font-size: 32px;
+  }
+
+  .title-1 {
+    font-size: 22px;
+  }
+}
+
+/* ========== TABLET OPTIMIZATIONS ========== */
+
+@media (min-width: 640px) and (max-width: 1024px) {
+  /* 2 columns for most grids */
+  .grid-cards-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-cards-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Slightly larger items for better readability */
+  .horizontal-scroll-item {
+    min-width: 300px;
+  }
+
+  /* Optimal reading line length */
+  .page-container {
+    max-width: 760px;
+  }
+}
+
+/* ========== DESKTOP OPTIMIZATIONS ========== */
+
+@media (min-width: 1025px) {
+  /* Full grids on desktop */
+  .page-container {
+    max-width: 1200px;
+  }
+
+  /* Wider cards for better information display */
+  .card-container {
+    padding: var(--space-2xl);
+  }
+
+  /* Reduce visual crowding with generous spacing */
+  :root {
+    --section-gap: var(--space-4xl);
+  }
+}
+
+/* ========== NAVIGATION-SPECIFIC SPACING ========== */
+
+/* Account for navbar height in calculations */
+.with-navbar-offset {
+  padding-top: var(--navbar-height);
+}
+
+/* Fixed bottom action button with navbar offset on mobile */
+@media (max-width: 639px) {
+  .fixed-bottom-action {
+    bottom: calc(var(--navbar-height) + var(--space-lg));
+    right: var(--space-lg);
+  }
+}
+
+@media (min-width: 640px) {
+  .fixed-bottom-action {
+    bottom: var(--space-md);
+    right: var(--space-md);
+  }
+}
+
+/* ========== FORM LAYOUTS ========== */
+
+/* Form field spacing */
+.form-field {
+  margin-bottom: var(--space-lg);
+}
+
+.form-field:last-child {
+  margin-bottom: 0;
+}
+
+.form-field-group {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 640px) {
+  .form-field-group-2col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ========== LIST ITEM SPACING ========== */
+
+.list-item {
+  padding: var(--space-lg) 0;
+  border-bottom: 1px solid var(--color-border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.list-item:first-child {
+  padding-top: 0;
+}
+
+/* ========== BADGE & PILL SPACING ========== */
+
+.badge-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+/* ========== BUTTON GROUP SPACING ========== */
+
+.button-group {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+@media (max-width: 639px) {
+  .button-group {
+    flex-direction: column;
+  }
+
+  .button-group button {
+    width: 100%;
+  }
+}
+
+/* ========== CONTENT WIDTH CONSTRAINTS ========== */
+
+/* Narrow content (form inputs, text-heavy) */
+.content-narrow {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Standard content (blog, articles) */
+.content-standard {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Wide content (dashboards, grids) */
+.content-wide {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ========== VERTICAL RHYTHM ========== */
+
+/* Consistent line spacing for readability */
+.prose {
+  line-height: var(--line-height-relaxed);
+}
+
+.prose p {
+  margin-bottom: var(--space-md);
+}
+
+.prose h2 {
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.prose h3 {
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+/* ========== PRINT STYLES ========== */
+
+@media print {
+  .page-wrapper {
+    padding-top: var(--space-xl);
+  }
+
+  .section {
+    page-break-inside: avoid;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .card-container {
+    page-break-inside: avoid;
+  }
+}
+
+/* ========== ACCESSIBILITY: FOCUS WITHIN ========== */
+
+.interactive-container:focus-within {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}

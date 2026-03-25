@@ -1,0 +1,397 @@
+/* 
+ * HandyFix Performance & Browser Optimization
+ * Phase 4 Enhancement: Cross-browser compatibility and performance
+ */
+
+/* ========== CROSS-BROWSER COMPATIBILITY ========== */
+
+/* Normalize box-sizing across browsers */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ========== VENDOR PREFIXES FOR LEGACY BROWSERS ========== */
+
+/* Backdrop filter for Safari/older Chrome */
+.glass-effect {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.glass-effect-strong {
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+/* Transform for older browsers */
+.hover-lift {
+  -webkit-transform: translateY(-4px);
+  -moz-transform: translateY(-4px);
+  -ms-transform: translateY(-4px);
+  -o-transform: translateY(-4px);
+  transform: translateY(-4px);
+}
+
+/* Font smoothing for better rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========== PERFORMANCE OPTIMIZATION ========== */
+
+/* Enable GPU acceleration for smooth animations */
+.animate-fadeIn,
+.animate-slideDown,
+.animate-slideUp, 
+.animate-scaleIn,
+.animate-pulse {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
+
+/* Optimize button animations */
+button,
+[role="button"] {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
+
+/* Lazy loading optimization */
+img,
+video {
+  decoding: async;
+}
+
+[loading="lazy"] {
+  /* Native lazy loading support */
+  will-change: transform;
+}
+
+/* ========== SCROLLBAR OPTIMIZATION ========== */
+
+/* Firefox scrollbar styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 193, 7, 0.3) rgba(255, 255, 255, 0.05);
+}
+
+/* Chrome/Safari scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 193, 7, 0.3);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 193, 7, 0.5);
+}
+
+/* ========== RESPONSIVE IMAGE OPTIMIZATION ========== */
+
+/* Ensure images scale responsively */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Picture element support */
+picture {
+  display: block;
+}
+
+/* ========== FORM OPTIMIZATION ========== */
+
+/* Input field optimization for mobile */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="date"],
+textarea {
+  /* Prevent zoom on iOS */
+  font-size: 16px;
+  /* Prevent double tap zoom on tap links */
+  -webkit-user-select: none;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Mobile keyboard styling */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+  font-size: 16px;
+  /* Prevent zoom when focused */
+}
+
+/* ========== TOUCH OPTIMIZATION ========== */
+
+/* Touch target sizing (minimum 44x44px for mobile) */
+@media (max-width: 768px) {
+  button,
+  [role="button"],
+  a,
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px 16px;
+  }
+
+  /* Ensure clickable areas are properly spaced */
+  a + a {
+    margin-left: 8px;
+  }
+}
+
+/* ========== WEBKIT SPECIFIC OPTIMIZATIONS ========== */
+
+/* Install app prompt styling for PWA */
+@supports (display: grid) {
+  /* Grid support */
+}
+
+/* Safari specific optimizations */
+@supports (-webkit-appearance: none) {
+  /* Webkit browsers */
+  ::selection {
+    background: var(--color-primary);
+    color: var(--color-bg-base);
+  }
+
+  ::-moz-selection {
+    background: var(--color-primary);
+    color: var(--color-bg-base);
+  }
+}
+
+/* ========== RENDERING OPTIMIZATION ========== */
+
+/* Contain layout for performance */
+.card-container,
+.section,
+[role="dialog"] {
+  contain: layout style paint;
+}
+
+/* Will-change for animated elements */
+.animated,
+[data-animated] {
+  will-change: transform, opacity;
+}
+
+/* Critical rendering path */
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  font-family: var(--font-family-body);
+}
+
+/* ========== LOADING STATE OPTIMIZATION ========== */
+
+/* Skeleton loading styling */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ========== FIREFOX SPECIFIC FIXES ========== */
+
+/* Fix for Firefox font rendering */
+@-moz-document url-prefix() {
+  body {
+    font-weight: 300;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+}
+
+/* ========== SAFARI SPECIFIC FIXES ========== */
+
+/* Safari input styling */
+input,
+textarea,
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-border-radius: 8px;
+}
+
+/* Safari focus ring */
+input:focus,
+textarea:focus,
+select:focus {
+  -webkit-outline: none;
+  outline: none;
+}
+
+/* ========== EDGE SPECIFIC FIXES ========== */
+
+/* Edge scrollbar optimization */
+@supports (-ms-ime-align: auto) {
+  /* Edge specific styles */
+  * {
+    -ms-overflow-style: scrollbar;
+  }
+}
+
+/* ========== RETINA DISPLAY OPTIMIZATION ========== */
+
+/* Optimize for high DPI screens */
+@media (-webkit-min-device-pixel-ratio: 2),
+       (min-resolution: 192dpi) {
+  /* Reduce font-weight slightly on high DPI */
+  body {
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+
+  /* Thinner borders on retina */
+  .border,
+  [class*="border"] {
+    border-width: 0.5px;
+  }
+}
+
+/* ========== DARK MODE OPTIMIZATION ========== */
+
+/* Optimize for dark mode */
+@media (prefers-color-scheme: dark) {
+  /* Already optimized for dark theme */
+  body {
+    background: var(--color-bg-base);
+    color: var(--color-text-primary);
+  }
+
+  /* Reduce eye strain in dark mode */
+  body {
+    outline: none;
+    border: none;
+  }
+}
+
+/* ========== LOW POWER MODE OPTIMIZATION ========== */
+
+/* Detect low power mode and reduce animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========== META VIEWPORT OPTIMIZATION ========== */
+
+/* Ensure proper viewport setup (should be in HTML head, but included here for completeness) */
+html {
+  width: 100%;
+  height: 100%;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/* ========== FONT OPTIMIZATION ========== */
+
+/* Font display strategy */
+@font-face {
+  font-family: 'Syne';
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-display: swap;
+}
+
+/* System font fallback */
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+/* ========== VECTOR OPTIMIZATION ========== */
+
+/* Optimize SVG rendering */
+svg {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* SVG text rendering */
+text {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ========== DIALOG/MODAL OPTIMIZATION ========== */
+
+/* Optimize modal rendering */
+.modal,
+[role="dialog"],
+.overlay {
+  contain: strict;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========== Z-INDEX MANAGEMENT ========== */
+
+/* Organized z-index scale */
+:root {
+  --z-dropdown: 1000;
+  --z-sticky: 20;
+  --z-fixed: 100;
+  --z-modal: 1000;
+  --z-popover: 999;
+  --z-tooltip: 999;
+  --z-notification: 2000;
+}
+
+/* ========== TESTING & DEBUGGING ========== */
+
+/* Show layout bounds for debugging (add data-debug-bounds attribute) */
+[data-debug-bounds] * {
+  outline: 1px dashed rgba(255, 193, 7, 0.3);
+}
+
+/* Show focus outlines for debugging */
+[data-debug-focus] *:focus-visible {
+  outline: 3px solid red;
+  outline-offset: 2px;
+}

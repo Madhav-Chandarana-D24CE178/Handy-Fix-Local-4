@@ -1,0 +1,406 @@
+/* 
+ * HandyFix Component Enhancements
+ * Advanced styling, hover states, and transitions for all components
+ */
+
+/* ========== BUTTON ENHANCEMENTS ========== */
+
+button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* Primary Button Style */
+button[type="submit"],
+button.btn-primary,
+.btn-primary {
+  background: linear-gradient(135deg, #FFC107 0%, #FFB300 100%);
+  color: #0F1419;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(255, 193, 7, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+button[type="submit"]:hover,
+button.btn-primary:hover,
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(255, 193, 7, 0.4);
+  background: linear-gradient(135deg, #FFD54F 0%, #FFC107 100%);
+}
+
+button[type="submit"]:active,
+button.btn-primary:active,
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.2);
+}
+
+/* Secondary Button Style */
+button.btn-secondary,
+.btn-secondary {
+  background: transparent;
+  color: #E4E6EB;
+  font-weight: 600;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 8px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button.btn-secondary:hover,
+.btn-secondary:hover {
+  border-color: #FFC107;
+  color: #FFC107;
+  background: rgba(255, 193, 7, 0.1);
+  box-shadow: 0 0 12px rgba(255, 193, 7, 0.2);
+}
+
+/* Icon Button */
+button.icon-btn,
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: #E4E6EB;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button.icon-btn:hover,
+.icon-btn:hover {
+  background: rgba(255, 193, 7, 0.15);
+  border-color: #FFC107;
+  color: #FFC107;
+  transform: scale(1.05);
+}
+
+/* ========== INPUT FIELD ENHANCEMENTS ========== */
+
+input,
+textarea,
+select {
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #FFC107;
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(232, 232, 237, 0.6);
+}
+
+/* ========== CARD ENHANCEMENTS ========== */
+
+.card,
+[role="card"],
+.booking-card,
+.product-card,
+.service-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 193, 7, 0.15);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover,
+[role="card"]:hover,
+.booking-card:hover,
+.product-card:hover,
+.service-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 193, 7, 0.3);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25);
+}
+
+.card.active,
+[role="card"].active,
+.booking-card.active,
+.product-card.active,
+.service-card.active {
+  border-color: #FFC107;
+  background: rgba(255, 193, 7, 0.08);
+  box-shadow: 0 0 20px rgba(255, 193, 7, 0.15);
+}
+
+/* ========== TAB/FILTER BUTTON ENHANCEMENTS ========== */
+
+.tab-button,
+.filter-btn,
+[role="tab"] {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: #8892A0;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-button:hover,
+.filter-btn:hover,
+[role="tab"]:hover {
+  border-color: rgba(255, 193, 7, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-button.active,
+.filter-btn.active,
+[role="tab"][aria-selected="true"] {
+  border-color: #FFC107;
+  color: #FFC107;
+  background: rgba(255, 193, 7, 0.1);
+  font-weight: 700;
+}
+
+/* ========== LINK & TEXT ENHANCEMENTS ========== */
+
+a {
+  color: #FFC107;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a:hover {
+  color: #FFD54F;
+  text-decoration: underline;
+}
+
+a.no-underline:hover {
+  text-decoration: none;
+}
+
+/* ========== BADGE & PILL ENHANCEMENTS ========== */
+
+.badge,
+.pill,
+.tag,
+.label {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(255, 193, 7, 0.15);
+  color: #FFC107;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.badge:hover,
+.pill:hover,
+.tag:hover,
+.label:hover {
+  background: rgba(255, 193, 7, 0.25);
+  transform: scale(1.05);
+}
+
+/* Status badge colors */
+.badge.success,
+.badge.completed {
+  background: rgba(76, 175, 130, 0.15);
+  color: #4CAF82;
+}
+
+.badge.danger,
+.badge.cancelled {
+  background: rgba(224, 90, 78, 0.15);
+  color: #E05A4E;
+}
+
+.badge.warning,
+.badge.pending {
+  background: rgba(255, 152, 0, 0.15);
+  color: #FF9800;
+}
+
+.badge.info,
+.badge.active {
+  background: rgba(255, 193, 7, 0.15);
+  color: #FFC107;
+}
+
+/* ========== PROGRESS & STEPPER ENHANCEMENTS ========== */
+
+.progress {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  height: 4px;
+  overflow: hidden;
+}
+
+.progress-bar,
+.progress-fill {
+  background: linear-gradient(90deg, #FFC107 0%, #FFD54F 100%);
+  height: 100%;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
+}
+
+.stepper-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stepper-step.active .step-indicator {
+  background: #FFC107;
+  color: #0F1419;
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(255, 193, 7, 0.3);
+}
+
+.stepper-step.completed .step-indicator {
+  background: #4CAF82;
+  color: white;
+}
+
+.step-indicator {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #8892A0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+/* ========== DROPDOWN & SELECT ENHANCEMENTS ========== */
+
+select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(232, 232, 237, 0.2);
+  color: #E4E6EB;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+select:hover {
+  border-color: rgba(255, 193, 7, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+select:focus {
+  border-color: #FFC107;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+}
+
+/* ========== SCROLLBAR STYLING ========== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 193, 7, 0.3);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 193, 7, 0.5);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-color: rgba(255, 193, 7, 0.3) rgba(255, 255, 255, 0.05);
+  scrollbar-width: thin;
+}
+
+/* ========== LOADING & SKELETON STATES ========== */
+
+.skeleton {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 8px;
+}
+
+.loading-spinner {
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #FFC107;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========== RESPONSIVE ENHANCEMENTS ========== */
+
+@media (max-width: 640px) {
+  button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .card,
+  [role="card"],
+  .booking-card {
+    padding: 16px;
+  }
+
+  .tab-button,
+  .filter-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+/* ========== FOCUS VISIBLE STATES (Accessibility) ========== */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #FFC107;
+  outline-offset: 2px;
+}
+
+/* Disable outline for mouse users if :focus-visible is not supported */
+button:focus,
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}

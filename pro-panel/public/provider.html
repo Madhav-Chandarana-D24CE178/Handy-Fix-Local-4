@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HandyFix — Provider Dashboard</title>
+<meta name="description" content="HandyFix Pro Dashboard for service providers to manage jobs, earnings, and profile.">
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#E6C04A;--primary-hover:#C49A28;
+  --dark:#1C1A14;--dark2:#232118;--dark3:#2E2B20;--dark4:#3A3620;
+  --text:#F5EDD5;--muted:#8A7E62;--faint:#5A5440;
+  --bg:#FDFAF2;--border:#2E2B20;
+  --green:#4CAF82;--green-dark:#2E8A5C;--red:#E05A4E;
+  --sidebar-w:240px;
+  --font-heading:'Syne',sans-serif;--font-body:'DM Sans',sans-serif;
+  --ease:cubic-bezier(0.25,0.46,0.45,0.94);
+}
+body{font-family:var(--font-body);background:var(--dark);color:var(--text);line-height:1.5;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:#2E2B20;border-radius:2px}
+::-webkit-scrollbar-track{background:transparent}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:var(--font-body);border:none;outline:none;background:none}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes glow{0%,100%{box-shadow:0 0 6px rgba(76,175,130,.5)}50%{box-shadow:0 0 12px rgba(76,175,130,.8)}}
+@keyframes pulseStrip{0%,100%{opacity:1}50%{opacity:.85}}
+.anim{animation:fadeUp .4s var(--ease) both}
+.ad1{animation-delay:.05s}.ad2{animation-delay:.1s}.ad3{animation-delay:.15s}.ad4{animation-delay:.2s}
+.ad5{animation-delay:.25s}.ad6{animation-delay:.3s}.ad7{animation-delay:.35s}
+
+/* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);background:#141210;z-index:100;display:flex;flex-direction:column;transition:transform .3s var(--ease)}
+.sb-logo{padding:22px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-logo svg{flex-shrink:0}
+.sb-logo-text{display:flex;flex-direction:column}
+.sb-logo-text span{font-family:var(--font-heading);font-weight:800;font-size:16px;color:var(--text);letter-spacing:-.4px}
+.sb-logo-text small{font-size:10px;color:var(--faint)}
+
+/* Online toggle */
+.online-row{margin:14px;background:var(--dark2);border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .2s var(--ease)}
+.online-row:hover{background:var(--dark3)}
+.online-left{display:flex;align-items:center;gap:8px}
+.online-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
+.online-dot.on{animation:glow 2s infinite}
+.online-dot.off{background:var(--muted);animation:none}
+.online-label{font-size:11px;font-weight:500}
+.online-label.on{color:var(--green)}
+.online-label.off{color:var(--muted)}
+.toggle-sw{width:36px;height:20px;border-radius:10px;position:relative;transition:background .2s var(--ease)}
+.toggle-sw.on{background:var(--green)}
+.toggle-sw.off{background:var(--dark3)}
+.toggle-sw::after{content:'';position:absolute;top:3px;width:14px;height:14px;border-radius:50%;background:var(--text);transition:left .2s var(--ease)}
+.toggle-sw.on::after{left:19px}
+.toggle-sw.off::after{left:3px}
+
+/* Nav */
+.sb-section{padding:16px 16px 4px;font-size:9px;color:var(--faint);letter-spacing:1.5px;text-transform:uppercase;font-weight:600}
+.sb-nav{list-style:none;padding:0 8px}
+.sb-nav li{margin-bottom:2px}
+.sb-nav a{display:flex;align-items:center;gap:10px;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:500;color:var(--muted);transition:all .2s var(--ease);border-left:2px solid transparent;position:relative}
+.sb-nav a:hover{background:rgba(255,255,255,.03);color:var(--text)}
+.sb-nav a.act{color:var(--primary);background:rgba(230,192,74,.07);border-left:2px solid var(--primary);padding-left:20px}
+.sb-nav a .icon{width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:auto}
+.badge-red{background:rgba(224,90,78,.15);color:var(--red)}
+.badge-gold{background:rgba(230,192,74,.12);color:var(--primary)}
+
+/* Sidebar bottom profile */
+.sb-profile{margin-top:auto;border-top:1px solid var(--border);padding:14px;display:flex;align-items:center;gap:10px}
+.sb-avatar{width:36px;height:36px;border-radius:10px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:800;font-size:13px;color:var(--dark);flex-shrink:0}
+.sb-profile-info span{font-size:12px;font-weight:600;color:var(--text);display:block}
+.sb-profile-info small{font-size:10px;color:var(--muted)}
+
+/* TOPBAR */
+.topbar{height:60px;background:#141210;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:50}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.topbar-title{font-family:var(--font-heading);font-weight:800;font-size:18px;color:var(--text)}
+.hamburger{display:none;width:36px;height:36px;align-items:center;justify-content:center;background:var(--dark2);border-radius:8px;border:1px solid var(--border);color:var(--text);font-size:18px}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.earn-chip{background:rgba(76,175,130,.1);border:1px solid rgba(76,175,130,.25);border-radius:10px;padding:6px 14px;display:flex;flex-direction:column;align-items:flex-end}
+.earn-chip strong{font-family:var(--font-heading);font-weight:800;font-size:16px;color:var(--green)}
+.earn-chip small{font-size:9px;color:var(--muted)}
+.bell-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--dark2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:16px;position:relative;transition:background .2s var(--ease)}
+.bell-btn:hover{background:var(--dark3)}
+.bell-btn .rd{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--red)}
+
+/* MAIN */
+.main{margin-left:var(--sidebar-w);min-height:100vh;display:flex;flex-direction:column}
+.content{padding:24px;flex:1}
+
+/* CARDS */
+.card{background:var(--dark2);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border)}
+.card-header h3{font-family:var(--font-heading);font-weight:700;font-size:14px;color:var(--text)}
+.card-header .link{font-size:11px;color:var(--primary);font-weight:600;cursor:pointer;transition:color .2s}
+.card-header .link:hover{color:var(--primary-hover)}
+.card-body{padding:16px 18px}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.stat-card{padding:16px 18px;border-radius:14px;background:var(--dark2);border:1px solid var(--border)}
+.stat-card.gold{background:var(--primary);border-color:var(--primary)}
+.stat-card .stat-label{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600}
+.stat-card.gold .stat-label{color:rgba(28,26,20,.6)}
+.stat-card .stat-num{font-family:var(--font-heading);font-weight:800;font-size:26px;margin:4px 0 2px}
+.stat-card.gold .stat-num{color:var(--dark)}
+.stat-card .stat-change{font-size:10px}
+.stat-card.gold .stat-change{color:rgba(28,26,20,.55)}
+
+/* ACTIVE JOB */
+.active-job{border:1.5px solid var(--primary);border-radius:14px;margin-bottom:20px;overflow:hidden}
+.active-strip{background:var(--primary);padding:8px 18px;display:flex;align-items:center;gap:8px;animation:pulseStrip 2s infinite}
+.active-strip span{font-size:11px;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:.3px}
+.active-body{padding:16px 18px;background:var(--dark2)}
+.cust-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.cust-icon{width:44px;height:44px;background:var(--dark3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.cust-info h4{font-size:14px;font-weight:700;color:var(--text)}
+.cust-info .svc{font-size:11px;color:var(--primary);margin:2px 0}
+.cust-info .addr{font-size:11px;color:var(--muted)}
+.chips-row{display:flex;gap:8px;margin-bottom:14px}
+.chip{flex:1;background:var(--dark3);border-radius:7px;padding:8px 12px;text-align:center}
+.chip .cv{font-family:var(--font-heading);font-weight:800;font-size:16px;color:var(--text)}
+.chip .cl{font-size:9px;color:var(--muted);margin-top:2px}
+.action-row{display:flex;gap:8px}
+.btn{padding:10px 18px;border-radius:8px;font-size:12px;font-weight:600;transition:all .2s var(--ease);display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn-gold{background:var(--primary);color:var(--dark);flex:1}
+.btn-gold:hover{background:var(--primary-hover)}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{background:var(--green-dark)}
+.btn-outline{border:1px solid var(--border);color:var(--text);background:transparent}
+.btn-outline:hover{background:rgba(255,255,255,.04)}
+.btn-red-outline{border:1px solid rgba(224,90,78,.3);color:var(--red);background:transparent}
+.btn-red-outline:hover{background:rgba(224,90,78,.06)}
+.btn-full{width:100%}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1.1fr 1fr;gap:16px;margin-bottom:20px}
+
+/* REQUEST ITEMS */
+.req-item{border-left:3px solid var(--primary);padding:14px;margin-bottom:10px;border-radius:0 10px 10px 0;background:rgba(255,255,255,.01);transition:background .2s}
+.req-item:hover{background:rgba(255,255,255,.025)}
+.req-item:last-child{margin-bottom:0}
+.req-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
+.req-icon{width:40px;height:40px;background:rgba(230,192,74,.1);border:1px solid rgba(230,192,74,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.req-info{flex:1}
+.req-info h4{font-size:13px;font-weight:700;color:var(--text)}
+.req-info .svc{font-size:11px;color:var(--primary)}
+.req-info .addr{font-size:10px;color:var(--muted);margin-top:2px}
+.req-price{font-family:var(--font-heading);font-weight:800;font-size:18px;color:var(--text);white-space:nowrap}
+.req-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.tag{font-size:10px;padding:3px 8px;border-radius:5px;background:rgba(255,255,255,.04);color:var(--muted);font-weight:500}
+.req-actions{display:flex;gap:8px;justify-content:flex-end}
+
+/* BAR CHART */
+.chart-wrap{height:160px;display:flex;align-items:flex-end;gap:8px;padding:0 4px}
+.chart-wrap.lg{height:200px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.bar{width:100%;border-radius:5px 5px 0 0;background:var(--dark3);transition:background .2s var(--ease);min-height:4px;cursor:pointer}
+.bar:hover{background:rgba(230,192,74,.3)}
+.bar.act{background:var(--primary)}
+.bl{font-size:9px;color:var(--faint);font-weight:700}
+.bv{font-size:9px;color:var(--muted);font-weight:600}
+
+/* TABLE */
+.tbl{width:100%}
+.tbl-head{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;padding:10px 18px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--border)}
+.tbl-head span{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--faint);font-weight:600}
+.tbl-row{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.03);align-items:center;transition:background .2s}
+.tbl-row:hover{background:rgba(255,255,255,.02)}
+.tbl-row:last-child{border-bottom:none}
+.tbl-row span{font-size:12px;color:var(--text)}
+.pill{font-size:10px;font-weight:600;padding:3px 10px;border-radius:6px;display:inline-block}
+.pill-green{background:rgba(76,175,130,.12);color:var(--green)}
+.pill-gold{background:rgba(230,192,74,.12);color:var(--primary)}
+.pill-red{background:rgba(224,90,78,.12);color:var(--red)}
+.pill-muted{background:rgba(138,126,98,.15);color:var(--muted)}
+
+/* FILTER TABS */
+.filter-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.ftab{padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid var(--border);color:var(--muted);transition:all .2s var(--ease)}
+.ftab:hover{color:var(--text);border-color:var(--faint)}
+.ftab.act{background:var(--primary);color:var(--dark);border-color:var(--primary)}
+
+/* REVIEWS */
+.rating-summary{display:flex;gap:24px;align-items:center;padding:20px}
+.rating-big{font-family:var(--font-heading);font-weight:800;font-size:48px;color:var(--primary)}
+.rating-stars{font-size:18px;color:var(--primary);margin:4px 0}
+.rating-count{font-size:11px;color:var(--muted)}
+.rating-bars{flex:1}
+.rbar-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.rbar-label{font-size:11px;color:var(--muted);width:24px;text-align:right;flex-shrink:0}
+.rbar-track{flex:1;height:6px;background:var(--dark3);border-radius:3px;overflow:hidden}
+.rbar-fill{height:100%;border-radius:3px;background:var(--primary);transition:width .5s var(--ease)}
+.rbar-pct{font-size:10px;color:var(--faint);width:30px}
+
+.review-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.review-item:last-child{border-bottom:none}
+.rev-avatar{width:32px;height:32px;border-radius:50%;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);font-weight:700;flex-shrink:0}
+.rev-content{flex:1}
+.rev-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.rev-name{font-size:12px;font-weight:600;color:var(--text)}
+.rev-date{font-size:10px;color:var(--faint)}
+.rev-stars{font-size:12px;color:var(--primary)}
+.rev-text{font-size:11px;color:var(--muted);line-height:1.55}
+
+/* PROFILE */
+.profile-top{display:flex;align-items:center;gap:14px;padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--border)}
+.profile-avatar{width:60px;height:60px;border-radius:14px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:800;font-size:22px;color:var(--dark);flex-shrink:0}
+.profile-name{font-family:var(--font-heading);font-weight:800;font-size:17px;color:var(--text)}
+.profile-role{font-size:11px;color:var(--muted)}
+.profile-verified{font-size:11px;color:var(--green);margin-top:4px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.info-item label{font-size:9px;text-transform:uppercase;color:var(--faint);letter-spacing:.5px;display:block;margin-bottom:2px;font-weight:600}
+.info-item span{font-size:13px;font-weight:700;color:var(--text)}
+.svc-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.svc-pill{background:rgba(230,192,74,.1);border:1px solid rgba(230,192,74,.25);color:var(--primary);border-radius:7px;padding:5px 12px;font-size:11px;font-weight:600}
+.doc-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.doc-row:last-child{border-bottom:none}
+.doc-row .dl{font-size:12px;color:var(--text);font-weight:500}
+.doc-row .dl .di{margin-right:6px}
+
+/* PAYOUT TABLE */
+.payout-tbl{width:100%}
+.payout-tbl .tbl-head{grid-template-columns:1fr 1fr 1fr}
+.payout-tbl .tbl-row{grid-template-columns:1fr 1fr 1fr}
+
+/* Greeting */
+.greeting h1{font-family:var(--font-heading);font-weight:800;font-size:24px;letter-spacing:-.5px;color:var(--text)}
+.greeting p{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* Page sections */
+.page{display:none}
+.page.show{display:block}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .hamburger{display:flex}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .two-col{grid-template-columns:1fr}
+  .content{padding:16px}
+  .topbar{padding:0 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <svg width="32" height="32" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="14" fill="#E6C04A"/>
+      <path d="M8 52L8 30L32 14L56 30L56 52" fill="none" stroke="#1C1A14" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="23" y="37" width="14" height="15" rx="3" fill="#1C1A14"/>
+      <path d="M47 22L54 15" stroke="#1C1A14" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="57" cy="12" r="4.5" fill="none" stroke="#1C1A14" stroke-width="3.5"/>
+    </svg>
+    <div class="sb-logo-text">
+      <span>HandyFix</span>
+      <small>Pro Dashboard</small>
+    </div>
+  </div>
+
+  <div class="online-row" id="onlineRow" onclick="toggleOnline()">
+    <div class="online-left">
+      <div class="online-dot on" id="onlineDot"></div>
+      <span class="online-label on" id="onlineLabel">Online · Taking Jobs</span>
+    </div>
+    <div class="toggle-sw on" id="toggleSw"></div>
+  </div>
+
+  <div class="sb-section">MAIN</div>
+  <ul class="sb-nav" id="navList">
+    <li><a href="#" class="act" data-page="dashboard" onclick="go('dashboard')"><span class="icon">▦</span>Dashboard</a></li>
+    <li><a href="#" data-page="requests" onclick="go('requests')"><span class="icon">📋</span>Job Requests<span class="badge badge-red">3</span></a></li>
+    <li><a href="#" data-page="jobs" onclick="go('jobs')"><span class="icon">✔</span>My Jobs</a></li>
+    <li><a href="#" data-page="earnings" onclick="go('earnings')"><span class="icon">₹</span>Earnings<span class="badge badge-gold">₹1.2K</span></a></li>
+  </ul>
+  <div class="sb-section">ACCOUNT</div>
+  <ul class="sb-nav">
+    <li><a href="#" data-page="reviews" onclick="go('reviews')"><span class="icon">★</span>Reviews</a></li>
+    <li><a href="#" data-page="profile" onclick="go('profile')"><span class="icon">👤</span>My Profile</a></li>
+  </ul>
+
+  <div class="sb-profile">
+    <div class="sb-avatar">RP</div>
+    <div class="sb-profile-info">
+      <span>Ramesh Patel</span>
+      <small>⭐ 4.8 · AC Technician</small>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" id="hamBtn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+      <span class="topbar-title" id="topTitle">Dashboard</span>
+    </div>
+    <div class="topbar-right">
+      <div class="earn-chip"><strong>₹1,240</strong><small>Earned today</small></div>
+      <button class="bell-btn">🔔<span class="rd"></span></button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <section class="page show" id="p-dashboard">
+      <div class="greeting" style="margin-bottom:22px">
+        <h1>Good morning, Ramesh 👋</h1>
+        <p>Monday, 16 March · Petlad, Gujarat · Great day to earn!</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card gold anim ad1">
+          <div class="stat-label">Today's Earnings</div>
+          <div class="stat-num">₹1,240</div>
+          <div class="stat-change">↑ +₹340 vs yesterday</div>
+        </div>
+        <div class="stat-card anim ad2">
+          <div class="stat-label">New Requests</div>
+          <div class="stat-num" style="color:var(--red)">3</div>
+          <div class="stat-change" style="color:var(--red)">Awaiting response</div>
+        </div>
+        <div class="stat-card anim ad3">
+          <div class="stat-label">Jobs This Month</div>
+          <div class="stat-num" style="color:var(--primary)">28</div>
+          <div class="stat-change" style="color:var(--green)">↑ +6 vs last month</div>
+        </div>
+        <div class="stat-card anim ad4">
+          <div class="stat-label">Rating</div>
+          <div class="stat-num" style="color:var(--primary)">4.8★</div>
+          <div class="stat-change" style="color:var(--muted)">142 total reviews</div>
+        </div>
+      </div>
+
+      <!-- Active Job -->
+      <div class="active-job anim ad7">
+        <div class="active-strip">
+          <span>● ACTIVE JOB RIGHT NOW</span>
+        </div>
+        <div class="active-body">
+          <div class="cust-row">
+            <div class="cust-icon">👤</div>
+            <div class="cust-info">
+              <h4>Priya Patel</h4>
+              <div class="svc">AC Repair — 1.5 ton split unit</div>
+              <div class="addr">📍 12-B Sukhram Society, Petlad · 1.2 km away</div>
+            </div>
+          </div>
+          <div class="chips-row">
+            <div class="chip"><div class="cv">₹500</div><div class="cl">Estimated</div></div>
+            <div class="chip"><div class="cv">1.2 km</div><div class="cl">Distance</div></div>
+            <div class="chip"><div class="cv">12 min</div><div class="cl">ETA</div></div>
+          </div>
+          <div class="action-row">
+            <button class="btn btn-gold">Navigate · Open GPS →</button>
+            <button class="btn btn-green">Mark Arrived</button>
+            <button class="btn btn-outline">📞 Call</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two col -->
+      <div class="two-col">
+        <div class="card anim ad5">
+          <div class="card-header"><h3>New Job Requests</h3><span class="link" onclick="go('requests')">View all →</span></div>
+          <div class="card-body">
+            <div class="req-item">
+              <div class="req-top">
+                <div class="req-icon">❄️</div>
+                <div class="req-info">
+                  <h4>Suresh Mehta</h4>
+                  <div class="svc">AC Repair — Not cooling</div>
+                  <div class="addr">📍 Vallabh Vidyanagar · 1.8 km</div>
+                </div>
+                <div class="req-price">₹500</div>
+              </div>
+              <div class="req-tags"><span class="tag">⏰ ASAP</span><span class="tag">💳 Online pay</span></div>
+              <div class="req-actions">
+                <button class="btn btn-outline" style="font-size:11px;padding:6px 14px">Decline</button>
+                <button class="btn btn-gold" style="font-size:11px;padding:6px 14px">Accept →</button>
+              </div>
+            </div>
+            <div class="req-item">
+              <div class="req-top">
+                <div class="req-icon">⚡</div>
+                <div class="req-info">
+                  <h4>Dhruv Patel</h4>
+                  <div class="svc">Electrician — Fan not working</div>
+                  <div class="addr">📍 Petlad · 0.8 km</div>
+                </div>
+                <div class="req-price">₹250</div>
+              </div>
+              <div class="req-tags"><span class="tag">⏰ ASAP</span><span class="tag">💵 Cash</span></div>
+              <div class="req-actions">
+                <button class="btn btn-outline" style="font-size:11px;padding:6px 14px">Decline</button>
+                <button class="btn btn-gold" style="font-size:11px;padding:6px 14px">Accept →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card anim ad6">
+          <div class="card-header"><h3>Weekly Earnings</h3></div>
+          <div class="card-body">
+            <div class="chart-wrap" id="chart1"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Jobs -->
+      <div class="card anim ad6">
+        <div class="card-header"><h3>Recent Jobs</h3><span class="link" onclick="go('jobs')">View all →</span></div>
+        <div class="tbl">
+          <div class="tbl-head"><span>Customer</span><span>Service</span><span>Amount</span><span>Status</span></div>
+          <div class="tbl-row"><span>Priya Patel</span><span>AC Repair</span><span>₹480</span><span><span class="pill pill-gold">In Progress</span></span></div>
+          <div class="tbl-row"><span>Rohan Joshi</span><span>AC Service</span><span>₹350</span><span><span class="pill pill-green">Completed</span></span></div>
+          <div class="tbl-row"><span>Minal Desai</span><span>AC Gas Refill</span><span>₹620</span><span><span class="pill pill-green">Completed</span></span></div>
+          <div class="tbl-row"><span>Ketan Shah</span><span>AC Repair</span><span>₹290</span><span><span class="pill pill-red">Cancelled</span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== JOB REQUESTS ===== -->
+    <section class="page" id="p-requests">
+      <div class="greeting" style="margin-bottom:22px">
+        <h1>Job Requests</h1>
+        <p>3 new requests waiting</p>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>Incoming Requests</h3><span class="badge badge-red">3 new</span></div>
+        <div class="card-body">
+          <div class="req-item">
+            <div class="req-top">
+              <div class="req-icon">❄️</div>
+              <div class="req-info">
+                <h4>Suresh Mehta</h4>
+                <div class="svc">AC Repair — Not cooling</div>
+                <div class="addr">📍 Vallabh Vidyanagar · 1.8 km · ⭐ 4.2 user rating</div>
+              </div>
+              <div class="req-price">₹500</div>
+            </div>
+            <div class="req-tags"><span class="tag">⏰ ASAP</span><span class="tag">💳 Online pay</span><span class="tag">🏠 1 BHK</span></div>
+            <div class="req-actions">
+              <button class="btn btn-outline" style="font-size:11px;padding:6px 14px">Decline</button>
+              <button class="btn btn-gold" style="font-size:11px;padding:6px 14px">Accept →</button>
+            </div>
+          </div>
+          <div class="req-item">
+            <div class="req-top">
+              <div class="req-icon">🔧</div>
+              <div class="req-info">
+                <h4>Ankit Shah</h4>
+                <div class="svc">Plumber — Pipe leak under sink</div>
+                <div class="addr">📍 Anand · 3.4 km · ⭐ 4.7 user rating</div>
+              </div>
+              <div class="req-price">₹350</div>
+            </div>
+            <div class="req-tags"><span class="tag">⏰ 2 PM today</span><span class="tag">💵 Cash</span></div>
+            <div class="req-actions">
+              <button class="btn btn-outline" style="font-size:11px;padding:6px 14px">Decline</button>
+              <button class="btn btn-gold" style="font-size:11px;padding:6px 14px">Accept →</button>
+            </div>
+          </div>
+          <div class="req-item">
+            <div class="req-top">
+              <div class="req-icon">⚡</div>
+              <div class="req-info">
+                <h4>Dhruv Patel</h4>
+                <div class="svc">Electrician — Ceiling fan not working</div>
+                <div class="addr">📍 Petlad · 0.8 km · ⭐ 4.9 user rating</div>
+              </div>
+              <div class="req-price">₹250</div>
+            </div>
+            <div class="req-tags"><span class="tag">⏰ 4 PM today</span><span class="tag">💵 Cash</span><span class="tag">🔄 Repeat customer</span></div>
+            <div class="req-actions">
+              <button class="btn btn-outline" style="font-size:11px;padding:6px 14px">Decline</button>
+              <button class="btn btn-gold" style="font-size:11px;padding:6px 14px">Accept →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== MY JOBS ===== -->
+    <section class="page" id="p-jobs">
+      <div class="greeting" style="margin-bottom:22px">
+        <h1>My Jobs</h1>
+        <p>28 jobs completed this month · ₹24,200 earned</p>
+      </div>
+      <div class="filter-tabs" id="filterTabs">
+        <button class="ftab act" onclick="filterJobs(this,'all')">All Jobs</button>
+        <button class="ftab" onclick="filterJobs(this,'completed')">Completed</button>
+        <button class="ftab" onclick="filterJobs(this,'progress')">In Progress</button>
+        <button class="ftab" onclick="filterJobs(this,'cancelled')">Cancelled</button>
+      </div>
+      <div class="card">
+        <div class="tbl" id="jobsTable">
+          <div class="tbl-head"><span>Customer</span><span>Service</span><span>Amount</span><span>Status</span></div>
+          <div class="tbl-row" data-status="progress"><span>Priya Patel</span><span>AC Repair</span><span>₹480</span><span><span class="pill pill-gold">In Progress</span></span></div>
+          <div class="tbl-row" data-status="completed"><span>Rohan Joshi</span><span>AC Service</span><span>₹350</span><span><span class="pill pill-green">Completed</span></span></div>
+          <div class="tbl-row" data-status="completed"><span>Minal Desai</span><span>AC Gas Refill</span><span>₹620</span><span><span class="pill pill-green">Completed</span></span></div>
+          <div class="tbl-row" data-status="cancelled"><span>Ketan Shah</span><span>AC Repair</span><span>₹290</span><span><span class="pill pill-red">Cancelled</span></span></div>
+          <div class="tbl-row" data-status="completed"><span>Hetal Shah</span><span>AC Deep Clean</span><span>₹800</span><span><span class="pill pill-green">Completed</span></span></div>
+          <div class="tbl-row" data-status="completed"><span>Vijay Bhai</span><span>AC Repair</span><span>₹420</span><span><span class="pill pill-green">Completed</span></span></div>
+          <div class="tbl-row" data-status="completed"><span>Sonal Mehta</span><span>AC Service</span><span>₹380</span><span><span class="pill pill-green">Completed</span></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== EARNINGS ===== -->
+    <section class="page" id="p-earnings">
+      <div class="greeting" style="margin-bottom:22px">
+        <h1>Earnings</h1>
+        <p>Your complete financial overview</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card gold anim ad1">
+          <div class="stat-label">Today</div>
+          <div class="stat-num">₹1,240</div>
+          <div class="stat-change">3 jobs completed</div>
+        </div>
+        <div class="stat-card anim ad2">
+          <div class="stat-label">This Week</div>
+          <div class="stat-num" style="color:var(--primary)">₹6,840</div>
+          <div class="stat-change" style="color:var(--green)">↑ +12%</div>
+        </div>
+        <div class="stat-card anim ad3">
+          <div class="stat-label">This Month</div>
+          <div class="stat-num" style="color:var(--primary)">₹24,200</div>
+          <div class="stat-change" style="color:var(--muted)">28 jobs</div>
+        </div>
+        <div class="stat-card anim ad4">
+          <div class="stat-label">Total Earned</div>
+          <div class="stat-num" style="color:var(--primary)">₹1.8L</div>
+          <div class="stat-change" style="color:var(--muted)">Since Jan 2024</div>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="card anim ad5">
+          <div class="card-header"><h3>Weekly Earnings</h3></div>
+          <div class="card-body">
+            <div class="chart-wrap lg" id="chart2"></div>
+          </div>
+        </div>
+        <div class="card anim ad6">
+          <div class="card-header"><h3>Payout History</h3></div>
+          <div class="payout-tbl tbl">
+            <div class="tbl-head"><span>Date</span><span>Amount</span><span>Status</span></div>
+            <div class="tbl-row"><span>14 Mar</span><span>₹8,400</span><span><span class="pill pill-green">Paid</span></span></div>
+            <div class="tbl-row"><span>7 Mar</span><span>₹7,200</span><span><span class="pill pill-green">Paid</span></span></div>
+            <div class="tbl-row"><span>1 Mar</span><span>₹9,100</span><span><span class="pill pill-green">Paid</span></span></div>
+          </div>
+          <div style="padding:0 18px 16px"><button class="btn btn-gold btn-full">Request Payout →</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== REVIEWS ===== -->
+    <section class="page" id="p-reviews">
+      <div class="greeting" style="margin-bottom:22px">
+        <h1>Reviews</h1>
+        <p>142 total reviews · 4.8 average rating</p>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="rating-summary">
+          <div style="text-align:center">
+            <div class="rating-big">4.8</div>
+            <div class="rating-stars">★★★★★</div>
+            <div class="rating-count">142 reviews</div>
+          </div>
+          <div class="rating-bars">
+            <div class="rbar-row"><span class="rbar-label">5★</span><div class="rbar-track"><div class="rbar-fill" style="width:78%"></div></div><span class="rbar-pct">78%</span></div>
+            <div class="rbar-row"><span class="rbar-label">4★</span><div class="rbar-track"><div class="rbar-fill" style="width:15%;opacity:.6"></div></div><span class="rbar-pct">15%</span></div>
+            <div class="rbar-row"><span class="rbar-label">3★</span><div class="rbar-track"><div class="rbar-fill" style="width:5%;background:var(--muted)"></div></div><span class="rbar-pct">5%</span></div>
+            <div class="rbar-row"><span class="rbar-label">2★</span><div class="rbar-track"><div class="rbar-fill" style="width:2%;background:var(--muted);opacity:.5"></div></div><span class="rbar-pct">2%</span></div>
+            <div class="rbar-row"><span class="rbar-label">1★</span><div class="rbar-track"><div class="rbar-fill" style="width:0%"></div></div><span class="rbar-pct">0%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>All Reviews</h3></div>
+        <div class="card-body">
+          <div class="review-item">
+            <div class="rev-avatar">PP</div>
+            <div class="rev-content">
+              <div class="rev-top"><span class="rev-name">Priya Patel · <span class="rev-date">14 Mar 2025</span></span><span class="rev-stars">★★★★★</span></div>
+              <div class="rev-text">Ramesh fixed our AC in 45 minutes flat. Very professional, clean work, charged exactly what was quoted. Highly recommend!</div>
+            </div>
+          </div>
+          <div class="review-item">
+            <div class="rev-avatar">RJ</div>
+            <div class="rev-content">
+              <div class="rev-top"><span class="rev-name">Rohan Joshi · <span class="rev-date">12 Mar 2025</span></span><span class="rev-stars">★★★★★</span></div>
+              <div class="rev-text">Very quick response and great work. The AC is running perfectly now.</div>
+            </div>
+          </div>
+          <div class="review-item">
+            <div class="rev-avatar">MD</div>
+            <div class="rev-content">
+              <div class="rev-top"><span class="rev-name">Minal Desai · <span class="rev-date">10 Mar 2025</span></span><span class="rev-stars">★★★★☆</span></div>
+              <div class="rev-text">Good service overall. Came on time and explained the problem clearly.</div>
+            </div>
+          </div>
+          <div class="review-item">
+            <div class="rev-avatar">HS</div>
+            <div class="rev-content">
+              <div class="rev-top"><span class="rev-name">Hetal Shah · <span class="rev-date">8 Mar 2025</span></span><span class="rev-stars">★★★★★</span></div>
+              <div class="rev-text">Best AC deep clean I have ever gotten. AC feels brand new now.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== MY PROFILE ===== -->
+    <section class="page" id="p-profile">
+      <div class="greeting" style="margin-bottom:22px">
+        <h1>My Profile</h1>
+        <p>Manage your account, skills, and documents</p>
+      </div>
+      <div class="two-col">
+        <div class="card anim ad5">
+          <div class="card-body">
+            <div class="profile-top">
+              <div class="profile-avatar">RP</div>
+              <div>
+                <div class="profile-name">Ramesh Patel</div>
+                <div class="profile-role">AC Technician · 7 years experience</div>
+                <div class="profile-verified">✓ Aadhaar Verified &nbsp; ✓ Background Checked</div>
+              </div>
+            </div>
+            <div class="info-grid">
+              <div class="info-item"><label>Phone</label><span>+91 98765 43210</span></div>
+              <div class="info-item"><label>Pincode</label><span>388150</span></div>
+              <div class="info-item"><label>City</label><span>Petlad, Gujarat</span></div>
+              <div class="info-item"><label>Member Since</label><span>Jan 2024</span></div>
+            </div>
+            <button class="btn btn-gold btn-full" style="margin-top:18px">Edit Profile</button>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px" class="anim ad6">
+          <div class="card">
+            <div class="card-header"><h3>My Services</h3></div>
+            <div class="card-body">
+              <div class="svc-pills">
+                <span class="svc-pill">❄️ AC Repair</span>
+                <span class="svc-pill">❄️ AC Service</span>
+                <span class="svc-pill">🔧 Appliance</span>
+              </div>
+              <div style="font-size:11px;color:var(--muted);margin-bottom:14px">Base rate ₹350/hr · Service radius 10 km</div>
+              <button class="btn btn-outline btn-full">+ Add New Service</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>KYC Documents</h3></div>
+            <div class="card-body">
+              <div class="doc-row"><span class="dl"><span class="di">✓</span>Aadhaar Card</span><span class="pill pill-green">Verified</span></div>
+              <div class="doc-row"><span class="dl"><span class="di">✓</span>PAN Card</span><span class="pill pill-green">Verified</span></div>
+              <div class="doc-row"><span class="dl"><span class="di">⏳</span>Bank Account</span><span class="pill pill-gold">Pending</span></div>
+              <button class="btn btn-gold btn-full" style="margin-top:14px">Upload Bank Details</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-red-outline btn-full" style="margin-top:8px">Logout from HandyFix</button>
+    </section>
+
+  </div>
+</div>
+
+<script src="handyfix-shared-db.js"></script>
+<script>
+let isOnline = true;
+
+// Sync online status to HF_DB when provider toggles online
+window.addEventListener('online-toggle', function(e) {
+  const providerId = 'PRO-001'; // Use actual provider ID from auth
+  HF_DB.toggleProviderOnline(providerId, e.detail.isOnline);
+});
+
+// Listen for new bookings from HF_DB
+window.addEventListener('storage', function(e) {
+  if (e.key === 'hf-bookings-ping') {
+    const unassigned = HF_DB.getUnassignedBookings();
+    updateRequestsList(unassigned);
+  }
+});
+
+function toggleOnline() {
+  isOnline = !isOnline;
+  
+  // Update shared database
+  const providerId = 'PRO-001'; // Use actual provider ID from auth
+  HF_DB.toggleProviderOnline(providerId, isOnline);
+  
+  const dot = document.getElementById('onlineDot');
+  const label = document.getElementById('onlineLabel');
+  const sw = document.getElementById('toggleSw');
+  if (isOnline) {
+    dot.className = 'online-dot on';
+    label.className = 'online-label on';
+    label.textContent = 'Online · Taking Jobs';
+    sw.className = 'toggle-sw on';
+  } else {
+    dot.className = 'online-dot off';
+    label.className = 'online-label off';
+    label.textContent = 'Offline · Not available';
+    sw.className = 'toggle-sw off';
+  }
+}
+
+const titles = {dashboard:'Dashboard',requests:'Job Requests',jobs:'My Jobs',earnings:'Earnings',reviews:'Reviews',profile:'My Profile'};
+
+function go(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('show'));
+  document.getElementById('p-' + name).classList.add('show');
+  document.querySelectorAll('.sb-nav a').forEach(a => a.classList.remove('act'));
+  const link = document.querySelector('.sb-nav a[data-page="' + name + '"]');
+  if (link) link.classList.add('act');
+  document.getElementById('topTitle').textContent = titles[name] || name;
+  document.getElementById('sidebar').classList.remove('open');
+  if (name === 'earnings') renderChart('chart2');
+}
+
+function filterJobs(btn, filter) {
+  document.querySelectorAll('#filterTabs .ftab').forEach(b => b.classList.remove('act'));
+  btn.classList.add('act');
+  document.querySelectorAll('#jobsTable .tbl-row').forEach(row => {
+    if (filter === 'all' || row.dataset.status === filter) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+function renderChart(id) {
+  const data = [{d:'Mon',v:980},{d:'Tue',v:1420},{d:'Wed',v:650},{d:'Thu',v:1800},{d:'Fri',v:1240},{d:'Sat',v:2100},{d:'Sun',v:560}];
+  const max = Math.max(...data.map(x => x.v));
+  const container = document.getElementById(id);
+  if (!container) return;
+  const maxH = id === 'chart2' ? 150 : 110;
+  container.innerHTML = data.map((item, i) => {
+    const h = Math.round((item.v / max) * maxH);
+    const isToday = i === 4;
+    return '<div class="bar-col"><div class="bv">₹' + item.v + '</div><div class="bar' + (isToday ? ' act' : '') + '" style="height:' + h + 'px"></div><div class="bl">' + item.d + '</div></div>';
+  }).join('');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.HF_DB && !window.HF_DB._initialized) {
+    window.HF_DB.init();
+    window.HF_DB._initialized = true;
+  }
+  renderChart('chart1');
+});
+</script>
+</body>
+</html>
